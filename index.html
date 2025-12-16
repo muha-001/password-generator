@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>مولد كلمات مرور قوية</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 28px;
+      color: #fff;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #2c2c2c;
+      color: white;
+      outline: none;
+    }
+
+    select:focus, button:focus {
+      border: 2px solid #4d8afc;
+    }
+
+    button {
+      background: linear-gradient(to right, #4d8afc, #2a5ad9);
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      background: #1e1e1e;
+      border-radius: 10px;
+      font-size: 18px;
+      text-align: center;
+      word-break: break-all;
+      direction: ltr;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      background: linear-gradient(to right, #27ae60, #219653);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(to right, #2ecc71, #27ae60);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>مولد كلمات مرور قوية</h1>
+    
+    <div class="input-group">
+      <label for="type">اختر نوع كلمة المرور:</label>
+      <select id="type">
+        <option value="1">حروف صغيرة وكبيرة</option>
+        <option value="2">حروف صغيرة وكبيرة + أرقام</option>
+        <option value="3">حروف صغيرة وكبيرة + أرقام + رموز</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="length">اختر طول كلمة المرور:</label>
+      <select id="length">
+        <option value="8">8 أحرف</option>
+        <option value="12">12 حرفًا</option>
+        <option value="16">16 حرفًا</option>
+      </select>
+    </div>
+
+    <button id="generate">توليد كلمة مرور</button>
+
+    <div class="result" id="password">--------</div>
+    <button class="copy-btn" id="copy">نسخ كلمة المرور</button>
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById('generate');
+    const copyBtn = document.getElementById('copy');
+    const passwordDisplay = document.getElementById('password');
+    const typeSelect = document.getElementById('type');
+    const lengthSelect = document.getElementById('length');
+
+    const charSets = {
+      1: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      2: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+      3: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?'
+    };
+
+    function generatePassword() {
+      const type = typeSelect.value;
+      const length = parseInt(lengthSelect.value, 10);
+      const chars = charSets[type];
+      let password = '';
+
+      if (!chars || length <= 0) return;
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        password += chars[randomIndex];
+      }
+
+      passwordDisplay.textContent = password;
+      copyBtn.textContent = 'نسخ كلمة المرور';
+      copyBtn.classList.remove('copied');
+    }
+
+    function copyToClipboard() {
+      const password = passwordDisplay.textContent;
+      if (password === '--------') return;
+
+      navigator.clipboard.writeText(password).then(() => {
+        copyBtn.textContent = 'تم النسخ!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'نسخ كلمة المرور';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('فشل النسخ: ', err);
+      });
+    }
+
+    generateBtn.addEventListener('click', generatePassword);
+    copyBtn.addEventListener('click', copyToClipboard);
+
+    // توليد كلمة مرور عند التحميل الأولي (اختياري)
+    generatePassword();
+  </script>
+</body>
+</html>
