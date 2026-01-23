@@ -1,45 +1,96 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="مولد كلمات مرور قوية وآمنة - أنشئ كلمات مرور عشوائية بسهولة">
+    <meta name="theme-color" content="#667eea">
     <title>مولد كلمات المرور - Password Generator</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Password Generator">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto+Mono:wght@500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+    <!-- Theme & Language Controls -->
+    <div class="top-controls">
+        <button id="theme-toggle" class="icon-btn theme-btn" title="تبديل الوضع" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+        <button id="lang-toggle" class="icon-btn lang-btn" title="Switch Language" aria-label="Toggle language">
+            <span class="lang-text">EN</span>
+        </button>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1>🔐 مولد كلمات المرور</h1>
-            <p class="subtitle">أنشئ كلمات مرور قوية وآمنة بنقرة واحدة</p>
+            <h1 data-ar="🔐 مولد كلمات المرور" data-en="🔐 Password Generator"></h1>
+            <p class="subtitle" data-ar="أنشئ كلمات مرور قوية وآمنة بنقرة واحدة"
+                data-en="Generate strong and secure passwords with one click"></p>
         </div>
 
         <div class="password-card">
             <div class="password-display-wrapper">
                 <input type="text" id="password-display" class="password-display" readonly value="">
-                <button id="copy-btn" class="icon-btn copy-btn" title="نسخ" aria-label="Copy password">
+                <button id="copy-btn" class="icon-btn copy-btn" data-title-ar="نسخ" data-title-en="Copy"
+                    aria-label="Copy password">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
                 </button>
             </div>
-            
+
             <div class="strength-indicator">
                 <div class="strength-bar">
                     <div id="strength-fill" class="strength-fill"></div>
                 </div>
-                <span id="strength-text" class="strength-text">متوسطة</span>
+                <span id="strength-text" class="strength-text"></span>
+            </div>
+        </div>
+
+        <!-- Password Presets -->
+        <div class="presets-card">
+            <h3 class="presets-title" data-ar="أنماط سريعة" data-en="Quick Presets"></h3>
+            <div class="presets-grid">
+                <button class="preset-btn" data-preset="memorable" data-ar="سهل التذكر" data-en="Memorable"></button>
+                <button class="preset-btn" data-preset="strong" data-ar="قوي جداً" data-en="Extra Strong"></button>
+                <button class="preset-btn" data-preset="pin" data-ar="رقم PIN" data-en="PIN Code"></button>
+                <button class="preset-btn" data-preset="wifi" data-ar="WiFi" data-en="WiFi"></button>
             </div>
         </div>
 
         <div class="controls-card">
             <div class="control-group">
                 <div class="control-header">
-                    <label for="length-slider">طول كلمة المرور</label>
+                    <label for="length-slider" data-ar="طول كلمة المرور" data-en="Password Length"></label>
                     <span id="length-value" class="value-display">16</span>
                 </div>
                 <input type="range" id="length-slider" class="slider" min="8" max="32" value="16">
@@ -50,7 +101,7 @@
                     <input type="checkbox" id="uppercase" checked>
                     <label for="uppercase">
                         <span class="checkbox-custom"></span>
-                        <span class="label-text">حروف كبيرة (A-Z)</span>
+                        <span class="label-text" data-ar="حروف كبيرة (A-Z)" data-en="Uppercase (A-Z)"></span>
                     </label>
                 </div>
 
@@ -58,7 +109,7 @@
                     <input type="checkbox" id="lowercase" checked>
                     <label for="lowercase">
                         <span class="checkbox-custom"></span>
-                        <span class="label-text">حروف صغيرة (a-z)</span>
+                        <span class="label-text" data-ar="حروف صغيرة (a-z)" data-en="Lowercase (a-z)"></span>
                     </label>
                 </div>
 
@@ -66,7 +117,7 @@
                     <input type="checkbox" id="numbers" checked>
                     <label for="numbers">
                         <span class="checkbox-custom"></span>
-                        <span class="label-text">أرقام (0-9)</span>
+                        <span class="label-text" data-ar="أرقام (0-9)" data-en="Numbers (0-9)"></span>
                     </label>
                 </div>
 
@@ -74,28 +125,41 @@
                     <input type="checkbox" id="symbols" checked>
                     <label for="symbols">
                         <span class="checkbox-custom"></span>
-                        <span class="label-text">رموز (!@#$%^&*)</span>
+                        <span class="label-text" data-ar="رموز (!@#$%^&*)" data-en="Symbols (!@#$%^&*)"></span>
                     </label>
                 </div>
             </div>
 
             <button id="generate-btn" class="generate-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
-                توليد كلمة مرور جديدة
+                <span data-ar="توليد كلمة مرور جديدة" data-en="Generate New Password"></span>
             </button>
         </div>
 
+        <!-- Password History -->
+        <div class="history-card">
+            <div class="history-header">
+                <h3 data-ar="التاريخ" data-en="History"></h3>
+                <button id="clear-history" class="clear-btn" data-ar="مسح الكل" data-en="Clear All"></button>
+            </div>
+            <div id="history-list" class="history-list">
+                <p class="empty-message" data-ar="لا توجد كلمات مرور محفوظة بعد" data-en="No passwords saved yet"></p>
+            </div>
+        </div>
+
         <div class="footer">
-            <p>💡 نصيحة: استخدم كلمات مرور فريدة لكل حساب</p>
+            <p data-ar="💡 نصيحة: استخدم كلمات مرور فريدة لكل حساب"
+                data-en="💡 Tip: Use unique passwords for each account"></p>
         </div>
     </div>
 
     <div id="copy-notification" class="copy-notification">
-        ✓ تم النسخ إلى الحافظة!
+        <span data-ar="✓ تم النسخ إلى الحافظة!" data-en="✓ Copied to clipboard!"></span>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
